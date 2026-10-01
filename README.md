@@ -1,30 +1,56 @@
 # Colaboração
 
-1. Clonar repositório:
+0. Abrir mysql e colar: 
 
-```
-git clone https://github.com/DevKhal-EL/Biblioteca-BD.git
+`` CREATE DATABASE BIBLIOTECA_BD;``
+`` USE BIBLIOTECA_BD; ``
 
-```
+1. Clonar repositório do projeto:
+
+``git clone https://github.com/DevKhal-EL/Biblioteca-BD.git`` 
 
 2. Mudar pra branch dev 
 
+``git switch dev``
+
+3. Instalar dependências:
+
+``npm install``
+``npm install mysql2``
+``npm install dotenv``
+
+4. Criar arquivo chamado '.env' na raíz do projeto e colocar suas credênciais, copie e cole:
 
 ```
-git switch dev
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=coloca_sua_senha
+DB_NAME=BIBLIOTECA_BD
 
 ```
 
-3. Faz tuas gambiarra
+6. Conectar ao banco de dados rodando ``node connectionDB.js`` em src/backend/.
+Se deu certo vai aparecer no terminal:
 
-4. Explica o que você fez no /docs/STATUS.md
+"Connected!"
 
-5. Salva e envia pro github
+Se deu erro, consultar IA ou internet até funcionar.
+
+7. Antes de fazer alterações no projeto, atualizar branch local:
+
+``git pull origin dev``
+
+Depois comece as alterações
+
+8. Explicar alterações em /docs/STATUS.md
+
+9. Salva e envia pro github depois que terminar:
 
 ```
+git status
 git add .
 git commit -m "feat: <O que você fez>"
 git push origin dev
 
 ```
-(Não envia nada pra main nessa disgrama)
+
