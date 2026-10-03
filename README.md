@@ -8,6 +8,7 @@
 1. Clonar repositório do projeto:
 
 ``git clone https://github.com/DevKhal-EL/Biblioteca-BD.git`` 
+``cd Biblioteca-BD`
 
 2. Mudar pra branch dev 
 
@@ -29,7 +30,8 @@ DB_NAME=BIBLIOTECA_BD
 
 ```
 
-6. Conectar ao banco de dados rodando ``node connectionDB.js`` em src/backend/.
+6. Conectar ao banco de dados rodando na raiz do projeto no terminal: 
+``node src/back-end/connectionDB.js`` 
 Se deu certo vai aparecer no terminal:
 
 "Connected!"

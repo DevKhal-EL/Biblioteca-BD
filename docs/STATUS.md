@@ -19,10 +19,11 @@ Criação branch main e dev
 - 
 - No caminho src/backend/connectionDB.js digitei e executei:
 
-``` let mysql = require('mysql2'); 
+```js 
+let mysql = require('mysql2'); 
 
 let con = mysql.createConnection({
-  host: "localhost",         // Apenas o endereço, sem "mysql://"
+  host: "localhost",         // Endereço (máquina local)  
   user: "root",              // Usuário padrão
   password: "",              // Deixei vazio já que não tem senha
   database: "BIBLIOTECA_BD"  // O nome do banco entra aqui separadamente
@@ -34,8 +35,10 @@ con.connect(function(err) {
 }); 
 
 ```
+Ali em vez de 'localhost' poderia deixar apenas o ip também da máquina local, que é sempre 127.0.0.1
+Vai funcionar do mesmo jeito
 
-Executei com node connectionDB.js na pasta do arquivo. Resultado:
+- Executei com `node connectionDB.js` na pasta do arquivo. Resultado:
 
 ``Connected!``
 
@@ -48,6 +51,91 @@ Na linha ``let mysql = require('mysql2');`` eu tinha deixado apenas ``let mysql 
 ### Depois disso:
 
 Pesquisando na net a IA disse que era preciso criar um arquivo .env porque é nesse arquivo que vai ficar as credenciais de login como senha e usuário que usamos quando abrimos o mysql.
+
+```env
+
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=minha_senha
+DB_NAME=BIBLIOTECA_BD
+
+```
+
+E no connectionDB.js:
+
+```js
+require('dotenv').config({ path: '../../.env' });
+let mysql = require('mysql2');
+
+let con = mysql.createConnection({
+  host: process.env.DB_HOST,         // Apenas o endereço, sem "mysql://"
+  user: process.env.DB_USER,              // Usuário padrão
+  password: process.env.DB_PASSWORD,              // Deixe vazio já que não tem senha
+  database: process.env.DB_NAME  // O nome do banco entra aqui separadamente
+});
+
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
+```
+
+Agora qualquer um que importar o projeto do github pode usar o próprio banco de dados colocando suas próprias credenciais.
+
+---
+## Feat Charlinho 03/10:
+
+- Reescrevi o `connectionDB.js` usando `import` em vez de `require` (ES Modules):
+
+```js
+import dotenv from 'dotenv';
+import mysql from 'mysql2/promise';
+
+dotenv.config();
+
+let connect = await mysql.createPool({
+  host: process.env.DB_HOST,         // Apenas o endereço, sem "mysql://"
+  user: process.env.DB_USER,              // Usuário padrão
+  password: process.env.DB_PASSWORD,              // Deixe vazio já que não tem senha
+  database: process.env.DB_NAME  // O nome do banco entra aqui separadamente
+})
+
+console.log("Connected!");
+
+export default connect;
+```
+A IA me recomendou fazer iss porque é mais moderno do que usar o require.
+
+E para que isso funcionasse, foi necessário dar um ``npm init -y` para criar um package.json, e escrever em baixo de description: 
+
+```json
+"type": "module",
+
+```
+
+**O que mudou:**
+
+- `require('dotenv').config({ path: '../../.env' })` virou `import dotenv from 'dotenv'` + `dotenv.config()`.
+- `require('mysql2')` virou `import mysql from 'mysql2/promise'`. Com a versão `/promise` dá pra usar `await` em vez de callback, então não precisei mais do `con.connect(function(err) {...})`.
+- Troquei `createConnection` por `createPool`. Deu certo com os dois, mas o pool é melhor porque guarda um conjunto de conexões que podem ser reaproveitadas, em vez de ficar só em uma.
+- Adicionei `export default connect;` para qualquer outro arquivo `.js` do projeto importar a conexão sem criar outra a cada consulta.
+- Escrevi comentários no código para quem clonar o projeto entender o que cada parte faz.
+
+**Como usar em outro arquivo:**
+
+```js
+import pool from './connectionDB.js';
+
+const [livros] = await pool.query('SELECT * FROM livros');
+```
+
+**Atenção:**
+
+- Não usar `pool.end()` dentro do `connectionDB.js`, senão o pool fecha logo depois de ser criado.
+- O `console.log("Connected!")` aparece mesmo se o banco não conectar, porque o pool só abre a conexão de verdade quando faz a primeira consulta.
+
+---
+
 
 
 
