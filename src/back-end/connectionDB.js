@@ -25,7 +25,7 @@ usuário, senha e nome do banco expostos diretamente no código.
 
 */
 
-let connect = await mysql.createPool({
+let con = await mysql.createPool({
   host: process.env.DB_HOST,         // Apenas o endereço, sem "mysql://"
   user: process.env.DB_USER,              // Usuário padrão
   password: process.env.DB_PASSWORD,              // Deixe vazio já que não tem senha
@@ -34,18 +34,18 @@ let connect = await mysql.createPool({
 
 console.log("Connected!");
 
-export default connect; /* Deixando a variável connect exportável, em qualquer outro 
+export default con; /* Deixando a variável con exportável, em qualquer outro 
                         outro arquivo.js que criarmos podermos usar ela usando import. 
                         Não necessitando criar uma nova conexão sempre que for fazer uma consulta 
                         ou outra operação.
 
                         Exemplo de uso em outro arquivo:
 
-                        import pool from './connectionDB.js';
+                        import con from './connectionDB.js';
 
                         const [livros] = await pool.query('SELECT * FROM livros');
 
-                        Não use pool.end() neste arquivo, pois isso fecharia o pool logo após ele
+                        Não use con.end() neste arquivo, pois isso fecharia o pool logo após ele
                         ser criado. Em uma aplicação que permanece rodando, o pool deve continuar
                         disponível para as rotas e operações do sistema.
 
