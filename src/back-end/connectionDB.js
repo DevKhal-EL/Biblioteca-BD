@@ -32,6 +32,10 @@ let con = await mysql.createPool({
   database: process.env.DB_NAME  // O nome do banco entra aqui separadamente
 })
 
+con.getConnection(); /* O createPool é 'preguiçoso', só faz a conexão depois que ele é chamado de alguma 
+forma fazendo alguma operação, como getConnection, ou uma query etc.
+*/
+
 console.log("Connected!");
 
 export default con; /* Deixando a variável con exportável, em qualquer outro 
