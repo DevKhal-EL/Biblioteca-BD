@@ -135,7 +135,38 @@ const [livros] = await pool.query('SELECT * FROM livros');
 - O `console.log("Connected!")` aparece mesmo se o banco não conectar, porque o pool só abre a conexão de verdade quando faz a primeira consulta.
 
 ---
+## Feat Charlinho 03/10:
 
+
+
+**## Feat Henrique 05/10:**
+
+- Começamos a reconstruir o JavaScript da página de cadastro do zero, descartando o JS antigo para evitar código desnecessário e facilitar a organização do projeto.
+
+- Primeiro, testamos a ligação entre o HTML e o JavaScript usando um `alert`, confirmando que o arquivo `.js` estava sendo carregado corretamente.
+
+- Depois, adicionamos um `eventListener` no formulário para detectar o evento `submit`:
+
+```js
+formulario.addEventListener("submit", function(event) {
+    event.preventDefault();
+});
+```
+
+O `event.preventDefault()` impede que o comportamento padrão do formulário aconteça, permitindo que o JavaScript controle o envio dos dados.
+
+- Em seguida, aprendemos a buscar os campos do formulário pelo `id` e acessar o conteúdo digitado pelo usuário através de `.value`:
+
+```js
+const nome = document.getElementById("input-nome").value;
+const email = document.getElementById("input-email").value;
+```
+
+- Testamos os valores usando `console.log()`, confirmando que o JavaScript consegue receber corretamente o nome e o e-mail preenchidos no formulário.
+
+- Inicialmente seria utilizado `localStorage` para armazenar os dados, mas decidimos não seguir por esse caminho, pois o objetivo do projeto é utilizar o banco de dados SQL. Assim, evitamos implementar uma solução temporária que posteriormente precisaria ser removida.
+
+- O próximo passo será fazer o JavaScript do frontend enviar os dados para um backend, que ficará responsável por realizar a comunicação com o MySQL/MariaDB e inserir os usuários no banco de dados.
 
 
 

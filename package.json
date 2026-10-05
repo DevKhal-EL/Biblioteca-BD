@@ -21,7 +21,6 @@
     "sql-escaper": "^1.5.2",
     "undici-types": "^8.9.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
